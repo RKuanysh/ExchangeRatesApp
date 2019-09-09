@@ -1,24 +1,26 @@
 package com.raimbekov.rates.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.raimbekov.rates.R
 import com.raimbekov.rates.main.view.MainViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MainViewModel>()
+    private lateinit var adapter: RatesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         viewModel.ratesLiveData.observe(this, Observer { rates ->
-            Toast.makeText(this, "received ${rates.size} rates", Toast.LENGTH_SHORT).show()
+            adapter.setItems(rates)
         })
 
         viewModel.ratesError.observe(this, Observer {
@@ -26,5 +28,9 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Error loading rates")
                 .show()
         })
+
+        adapter = RatesAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
 }
