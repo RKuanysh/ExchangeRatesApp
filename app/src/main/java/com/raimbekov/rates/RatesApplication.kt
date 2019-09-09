@@ -1,6 +1,7 @@
 package com.raimbekov.rates
 
 import android.app.Application
+import com.raimbekov.rates.common.CommonModule
 import com.raimbekov.rates.main.MainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -12,6 +13,7 @@ class RatesApplication: Application() {
 
         startKoin {
             androidContext(this@RatesApplication)
+            modules(CommonModule.module)
             modules(MainModule.module)
         }
     }
