@@ -1,12 +1,12 @@
-package com.raimbekov.rates.main
+package com.raimbekov.rates.main.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raimbekov.rates.R
-import com.raimbekov.rates.main.view.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -29,7 +29,14 @@ class MainActivity : AppCompatActivity() {
                 .show()
         })
 
-        adapter = RatesAdapter()
+        viewModel.loading.observe(this, Observer {
+            progressBar.isVisible = it
+        })
+
+        adapter = RatesAdapter {
+            viewModel.setCurrency(it)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }

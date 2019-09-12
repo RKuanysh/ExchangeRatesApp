@@ -1,4 +1,4 @@
-package com.raimbekov.rates.main
+package com.raimbekov.rates.main.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,20 +9,21 @@ import com.raimbekov.rates.R
 import com.raimbekov.rates.main.domain.model.Rate
 import kotlinx.android.synthetic.main.item_rate.view.*
 
-class RatesAdapter() : RecyclerView.Adapter<ViewHolder>() {
+class RatesAdapter(
+    private val onItemClickListener: (String) -> Unit
+) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<Rate> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rate, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, onItemClickListener)
     }
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.currencyTextView.text = items.get(position).currency
-        holder.valueTextView.text = items.get(position).value.toString()
+        holder.bind(items.get(position))
     }
 
     fun setItems(rates: List<Rate>) {
@@ -32,9 +33,19 @@ class RatesAdapter() : RecyclerView.Adapter<ViewHolder>() {
 }
 
 class ViewHolder(
-    view: View
+    private val view: View,
+    private val onItemClickListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
-    val currencyTextView: TextView = view.currencyTextView
-    val valueTextView: TextView = view.valueTextView
+    private val currencyTextView: TextView = view.currencyTextView
+    private val valueTextView: TextView = view.valueTextView
+
+    fun bind(rate: Rate) {
+        currencyTextView.text = rate.currency
+        valueTextView.text = rate.value.toString()
+
+        view.setOnClickListener {
+            onItemClickListener(rate.currency)
+        }
+    }
 }

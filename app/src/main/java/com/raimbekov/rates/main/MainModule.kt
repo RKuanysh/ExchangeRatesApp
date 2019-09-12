@@ -1,6 +1,6 @@
 package com.raimbekov.rates.main
 
-import com.raimbekov.rates.main.domain.RatesInteractor
+import com.raimbekov.rates.main.domain.GetRatesUseCase
 import com.raimbekov.rates.main.domain.RatesRepository
 import com.raimbekov.rates.main.repository.RatesRemoteRepository
 import com.raimbekov.rates.main.repository.RatesService
@@ -18,7 +18,7 @@ object MainModule {
 
         factory<RatesRepository> { RatesRemoteRepository(get()) }
 
-        factory { RatesInteractor(get()) }
+        factory { GetRatesUseCase(get()) }
 
         factory { MainViewModel(get()) }
     }
