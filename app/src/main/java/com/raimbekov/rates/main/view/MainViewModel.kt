@@ -5,15 +5,17 @@ import androidx.lifecycle.ViewModel
 import com.raimbekov.rates.common.SingleLiveEvent
 import com.raimbekov.rates.main.domain.GetRatesUseCase
 import com.raimbekov.rates.main.domain.model.Rate
+import com.raimbekov.rates.main.view.model.RatesUpdateData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class MainViewModel(
     private val getRatesUseCase: GetRatesUseCase
 ) : ViewModel() {
 
-    val ratesLiveData = MutableLiveData<List<Rate>>()
+    val ratesLiveData = MutableLiveData<RatesUpdateData>()
     val ratesError = SingleLiveEvent<Unit>()
     val loading = MutableLiveData<Boolean>().apply { value = false }
 
@@ -26,10 +28,18 @@ class MainViewModel(
         update()
     }
 
-    fun setCurrency(rate: Rate) {
-        this.currency = rate.currency
-        this.amount = rate.value
-        update()
+    fun setCurrency(newBaseCurrencyIndex: Int, rate: Rate) {
+        var ratesUpdateData = ratesLiveData.value
+        if (rate.currency != currency && ratesUpdateData != null) {
+            // swap new currency with base
+            Collections.swap(ratesUpdateData.rates, 0, newBaseCurrencyIndex)
+            ratesUpdateData = ratesUpdateData.copy(isFirstChanged = true)
+            ratesLiveData.value = ratesUpdateData
+
+            this.currency = rate.currency
+            this.amount = rate.value
+            update()
+        }
     }
 
     fun setAmount(amount: Double) {
@@ -48,7 +58,7 @@ class MainViewModel(
             }
             .subscribe({
                 loading.value = false
-                ratesLiveData.value = listOf(Rate(currency, amount)) + it
+                ratesLiveData.value = RatesUpdateData(listOf(Rate(currency, amount)) + it)
             }, {
                 it.printStackTrace()
             })

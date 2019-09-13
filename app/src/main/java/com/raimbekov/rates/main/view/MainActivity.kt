@@ -19,8 +19,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel.ratesLiveData.observe(this, Observer { rates ->
-            adapter.setItems(rates)
+        viewModel.ratesLiveData.observe(this, Observer { ratesUpdateData ->
+            adapter.setItems(ratesUpdateData.rates)
+            if (ratesUpdateData.isFirstChanged) {
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.notifyItemRangeChanged(1, ratesUpdateData.rates.size - 1)
+            }
         })
 
         viewModel.ratesError.observe(this, Observer {
@@ -34,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         adapter = RatesAdapter {
-            viewModel.setCurrency(it)
+            viewModel.setCurrency(it, adapter.getItem(it))
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)

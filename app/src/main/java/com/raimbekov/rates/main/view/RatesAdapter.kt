@@ -1,5 +1,6 @@
 package com.raimbekov.rates.main.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.raimbekov.rates.main.domain.model.Rate
 import kotlinx.android.synthetic.main.item_rate.view.*
 
 class RatesAdapter(
-    private val onItemClickListener: (Rate) -> Unit
+    private val onItemClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<Rate> = emptyList()
@@ -23,29 +24,39 @@ class RatesAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items.get(position))
+        if (position == 0) {
+            Log.i(javaClass.name, "Binding first")
+        }
+        holder.bind(items.get(position), position == 0)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+
     }
 
     fun setItems(rates: List<Rate>) {
         items = rates
-        notifyDataSetChanged()
     }
+
+    fun getItem(index: Int): Rate = items.get(index)
 }
 
 class ViewHolder(
     private val view: View,
-    private val onItemClickListener: (Rate) -> Unit
+    private val onItemClickListener: (Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val currencyTextView: TextView = view.currencyTextView
-    private val valueTextView: TextView = view.valueTextView
+    private val valueEditText: TextView = view.valueEditText
 
-    fun bind(rate: Rate) {
+    fun bind(rate: Rate, isEditable: Boolean) {
         currencyTextView.text = rate.currency
-        valueTextView.text = rate.value.toString()
+        valueEditText.text = rate.value.toString()
+        valueEditText.isEnabled = isEditable
 
         view.setOnClickListener {
-            onItemClickListener(rate)
+            onItemClickListener(adapterPosition)
         }
     }
 }
