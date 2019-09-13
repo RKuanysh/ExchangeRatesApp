@@ -10,7 +10,7 @@ import com.raimbekov.rates.main.domain.model.Rate
 import kotlinx.android.synthetic.main.item_rate.view.*
 
 class RatesAdapter(
-    private val onItemClickListener: (String) -> Unit
+    private val onItemClickListener: (Rate) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<Rate> = emptyList()
@@ -34,7 +34,7 @@ class RatesAdapter(
 
 class ViewHolder(
     private val view: View,
-    private val onItemClickListener: (String) -> Unit
+    private val onItemClickListener: (Rate) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val currencyTextView: TextView = view.currencyTextView
@@ -45,7 +45,7 @@ class ViewHolder(
         valueTextView.text = rate.value.toString()
 
         view.setOnClickListener {
-            onItemClickListener(rate.currency)
+            onItemClickListener(rate)
         }
     }
 }

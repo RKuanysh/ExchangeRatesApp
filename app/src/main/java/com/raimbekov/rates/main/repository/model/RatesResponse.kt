@@ -8,5 +8,5 @@ data class RatesResponse(
     val base: String,
 
     @SerializedName("rates")
-    val rates: HashMap<String, Double>
+    val rates: LinkedHashMap<String, Double>
 )

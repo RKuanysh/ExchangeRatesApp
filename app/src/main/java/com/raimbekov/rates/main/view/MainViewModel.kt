@@ -26,8 +26,9 @@ class MainViewModel(
         update()
     }
 
-    fun setCurrency(currency: String) {
-        this.currency = currency
+    fun setCurrency(rate: Rate) {
+        this.currency = rate.currency
+        this.amount = rate.value
         update()
     }
 
@@ -39,16 +40,15 @@ class MainViewModel(
     private fun update() {
         ratesSubscription?.dispose()
 
-        ratesSubscription = getRatesUseCase.getRates(currency)
+        ratesSubscription = getRatesUseCase.getRates(currency, amount)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 loading.value = true
-                ratesLiveData.value = emptyList()
             }
             .subscribe({
                 loading.value = false
-                ratesLiveData.value = it
+                ratesLiveData.value = listOf(Rate(currency, amount)) + it
             }, {
                 it.printStackTrace()
             })
