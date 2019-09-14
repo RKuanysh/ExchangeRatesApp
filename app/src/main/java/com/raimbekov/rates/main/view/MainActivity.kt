@@ -38,9 +38,10 @@ class MainActivity : AppCompatActivity() {
             progressBar.isVisible = it
         })
 
-        adapter = RatesAdapter {
-            viewModel.setCurrency(it, adapter.getItem(it))
-        }
+        adapter = RatesAdapter(
+            { viewModel.setCurrency(it, adapter.getItem(it)) },
+            { viewModel.setAmount(it) }
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
