@@ -76,7 +76,7 @@ class MainViewModel(
 
     companion object {
         val formatter = object : ThreadLocal<DecimalFormat>() {
-            override fun initialValue(): DecimalFormat = DecimalFormat("#0.0000")
+            override fun initialValue(): DecimalFormat = DecimalFormat("#0.####")
         }
     }
 }
