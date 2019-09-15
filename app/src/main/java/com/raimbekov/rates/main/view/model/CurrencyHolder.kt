@@ -13,7 +13,7 @@ object CurrencyHolder {
         put("CNY", CurrencyData(R.mipmap.flag_china, R.string.currency_china))
         put("CZK", CurrencyData(R.mipmap.flag_czechia, R.string.currency_czechia))
         put("DKK", CurrencyData(R.mipmap.flag_denmark, R.string.currency_denmark))
-        put("GBP", CurrencyData(R.mipmap.flag_britain, R.string.currency_denmark))
+        put("GBP", CurrencyData(R.mipmap.flag_britain, R.string.currency_britain))
         put("HKD", CurrencyData(R.mipmap.flag_hong_kong, R.string.currency_hong_kong))
         put("HRK", CurrencyData(R.mipmap.flag_croatia, R.string.currency_croatia))
         put("HUF", CurrencyData(R.mipmap.flag_hungaria, R.string.currency_hungaria))
