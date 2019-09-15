@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.loading.observe(this, Observer {
-            progressBar.isVisible = it
+            progressBar.isVisible = false
         })
 
         adapter = RatesAdapter(
-            { viewModel.setCurrency(it, adapter.getItem(it)) },
+            { viewModel.setCurrency(it) },
             { viewModel.setAmount(it) }
         )
 

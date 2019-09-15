@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">Exchange Rates</string>
+    <string name="currency_australia">Australian Dollar</string>
+    <string name="currency_bulgaria">Bulgarian Lev</string>
+    <string name="currency_brazil">Brazilian Real</string>
+    <string name="currency_canada">Canadian Dollar</string>
+    <string name="currency_switzerland">Swiss Franc</string>
+    <string name="currency_china">Chinese Yuan</string>
+    <string name="currency_czechia">Czech Koruna</string>
+    <string name="currency_denmark">Danish Krone</string>
+    <string name="currency_britain">Pound Sterling</string>
+    <string name="currency_hong_kong">Hong Kong Dollar</string>
+    <string name="currency_croatia">Croatian Kuna</string>
+    <string name="currency_hungaria">Hungarian Forint</string>
+    <string name="currency_indonesia">Indonesian Rupiah</string>
+    <string name="currency_israel">Israeli New Shekel</string>
+    <string name="currency_india">Indian Rupee</string>
+    <string name="currency_iceland">Icelandic Króna</string>
+    <string name="currency_japan">Japanese Yen</string>
+    <string name="currency_south_korea">South Korean won</string>
+    <string name="currency_mexico">Mexican Peso</string>
+    <string name="currency_malaysia">Malaysian Ringgit</string>
+    <string name="currency_norway">Norwegian Krone</string>
+    <string name="currency_new_zealand">New Zealand Dollar</string>
+    <string name="currency_philippines">Philippine peso</string>
+    <string name="currency_poland">Polish złoty</string>
+    <string name="currency_romania">Romanian Leu</string>
+    <string name="currency_russia">Russian Ruble</string>
+    <string name="currency_sweden">Swedish Krona</string>
+    <string name="currency_singapore">Singapore Dollar</string>
+    <string name="currency_thailand">Thai Baht</string>
+    <string name="currency_turkey">Turkish lira</string>
+    <string name="currency_usa">US Dollar</string>
+    <string name="currency_south_africa">South African Rand</string>
+    <string name="currency_europe">Euro</string>
 </resources>

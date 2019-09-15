@@ -9,7 +9,6 @@ import com.raimbekov.rates.main.view.model.RatesUpdateData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 class MainViewModel(
     private val ratesInteractor: RatesInteractor
@@ -29,19 +28,16 @@ class MainViewModel(
         update()
     }
 
-    fun setCurrency(newBaseCurrencyIndex: Int, rate: Rate) {
-        var ratesUpdateData = ratesLiveData.value
-        if (rate.currency != currency && ratesUpdateData != null) {
-            // swap new currency with base
-            Collections.swap(ratesUpdateData.rates, 0, newBaseCurrencyIndex)
-            ratesUpdateData = ratesUpdateData.copy(isFirstChanged = true)
-            ratesLiveData.value = ratesUpdateData
-
-            this.currency = rate.currency
-            this.amount = rate.value
-            ratesInteractor.setCurrency(currency)
-            update()
+    fun setCurrency(rate: Rate) {
+        if (currency == rate.currency) {
+            return
         }
+        ratesLiveData.value = RatesUpdateData(listOf(rate), true)
+
+        this.currency = rate.currency
+        this.amount = rate.value
+        ratesInteractor.setCurrency(rate.currency)
+        update()
     }
 
     fun setAmount(amount: Double) {
@@ -60,7 +56,7 @@ class MainViewModel(
             }
             .subscribe({
                 loading.value = false
-                ratesLiveData.value = RatesUpdateData(listOf(Rate(currency, amount)) + it)
+                ratesLiveData.value = RatesUpdateData(listOf(Rate(currency, amount)) + it, false)
             }, {
                 it.printStackTrace()
             })
