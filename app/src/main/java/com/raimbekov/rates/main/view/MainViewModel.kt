@@ -3,7 +3,7 @@ package com.raimbekov.rates.main.view
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raimbekov.rates.common.SingleLiveEvent
-import com.raimbekov.rates.main.domain.GetRatesUseCase
+import com.raimbekov.rates.main.domain.RatesInteractor
 import com.raimbekov.rates.main.domain.model.Rate
 import com.raimbekov.rates.main.view.model.RatesUpdateData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class MainViewModel(
-    private val getRatesUseCase: GetRatesUseCase
+    private val ratesInteractor: RatesInteractor
 ) : ViewModel() {
 
     val ratesLiveData = MutableLiveData<RatesUpdateData>()
@@ -25,6 +25,7 @@ class MainViewModel(
     private var amount: Double = 1.0
 
     init {
+        ratesInteractor.setCurrency(currency)
         update()
     }
 
@@ -38,6 +39,7 @@ class MainViewModel(
 
             this.currency = rate.currency
             this.amount = rate.value
+            ratesInteractor.setCurrency(currency)
             update()
         }
     }
@@ -50,7 +52,7 @@ class MainViewModel(
     private fun update() {
         ratesSubscription?.dispose()
 
-        ratesSubscription = getRatesUseCase.getRates(currency, amount)
+        ratesSubscription = ratesInteractor.getRates(amount)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
