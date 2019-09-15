@@ -70,10 +70,14 @@ class MainViewModel(
             .doOnSubscribe {
                 loading.value = true
             }
+            .doOnEach {
+                loading.value = false
+            }
             .subscribe({
                 ratesLiveData.value = RatesUpdateData(listOf(RateViewData(currency, amount.toString())) + it, false)
             }, {
                 it.printStackTrace()
+                loading.value = false
                 ratesError.value = Unit
             })
     }

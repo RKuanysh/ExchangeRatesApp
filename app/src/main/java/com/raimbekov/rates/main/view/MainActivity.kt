@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.loading.observe(this, Observer {
-            progressBar.isVisible = false
+            progressBar.isVisible = it
         })
 
         adapter = RatesAdapter(
