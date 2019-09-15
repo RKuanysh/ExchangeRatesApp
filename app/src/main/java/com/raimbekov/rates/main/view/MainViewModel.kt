@@ -4,11 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raimbekov.rates.common.SingleLiveEvent
 import com.raimbekov.rates.main.domain.RatesInteractor
-import com.raimbekov.rates.main.domain.model.Rate
+import com.raimbekov.rates.main.view.model.RateViewData
 import com.raimbekov.rates.main.view.model.RatesUpdateData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.text.DecimalFormat
 
 class MainViewModel(
     private val ratesInteractor: RatesInteractor
@@ -28,20 +29,20 @@ class MainViewModel(
         update()
     }
 
-    fun setCurrency(rate: Rate) {
+    fun setCurrency(rate: RateViewData) {
         if (currency == rate.currency) {
             return
         }
         ratesLiveData.value = RatesUpdateData(listOf(rate), true)
 
         this.currency = rate.currency
-        this.amount = rate.value
+        this.amount = rate.value.toDouble()
         ratesInteractor.setCurrency(rate.currency)
         update()
     }
 
-    fun setAmount(amount: Double) {
-        this.amount = amount
+    fun setAmount(amount: String) {
+        this.amount = amount.toDoubleOrNull() ?: 0.0
         update()
     }
 
@@ -49,6 +50,12 @@ class MainViewModel(
         ratesSubscription?.dispose()
 
         ratesSubscription = ratesInteractor.getRates(amount)
+            .observeOn(Schedulers.single())
+            .map {
+                it.map {
+                    RateViewData(it.currency, formatter.get()?.format(it.value) ?: "0.0")
+                }
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -56,7 +63,7 @@ class MainViewModel(
             }
             .subscribe({
                 loading.value = false
-                ratesLiveData.value = RatesUpdateData(listOf(Rate(currency, amount)) + it, false)
+                ratesLiveData.value = RatesUpdateData(listOf(RateViewData(currency, amount.toString())) + it, false)
             }, {
                 it.printStackTrace()
             })
@@ -65,5 +72,11 @@ class MainViewModel(
     override fun onCleared() {
         super.onCleared()
         ratesSubscription?.dispose()
+    }
+
+    companion object {
+        val formatter = object : ThreadLocal<DecimalFormat>() {
+            override fun initialValue(): DecimalFormat = DecimalFormat("#0.0000")
+        }
     }
 }

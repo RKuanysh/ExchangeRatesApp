@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raimbekov.rates.R
 import com.raimbekov.rates.main.domain.model.Rate
 import com.raimbekov.rates.main.view.model.CurrencyHolder
+import com.raimbekov.rates.main.view.model.RateViewData
 import kotlinx.android.synthetic.main.item_rate.view.*
 
 class RatesAdapter(
-    private val onItemClickListener: (Rate) -> Unit,
-    private val onValueChangedListener: (Double) -> Unit
+    private val onItemClickListener: (RateViewData) -> Unit,
+    private val onValueChangedListener: (String) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
-    private var items: List<Rate> = emptyList()
+    private var items: List<RateViewData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rate, parent, false)
@@ -37,15 +38,15 @@ class RatesAdapter(
         holder.unbind()
     }
 
-    fun setItems(rates: List<Rate>) {
+    fun setItems(rates: List<RateViewData>) {
         items = rates
     }
 }
 
 class ViewHolder(
     private val view: View,
-    private val onItemClickListener: (Rate) -> Unit,
-    private val onValueChangedListener: (Double) -> Unit
+    private val onItemClickListener: (RateViewData) -> Unit,
+    private val onValueChangedListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val currencySymbolView: TextView = view.currencySymbolView
@@ -54,7 +55,7 @@ class ViewHolder(
     private val valueEditText: EditText = view.valueEditText
     private val valueChangeListener: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
-            onValueChangedListener(s.toString().toDoubleOrNull() ?: 0.0)
+            onValueChangedListener(s.toString())
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -62,7 +63,7 @@ class ViewHolder(
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
     }
 
-    fun bind(rate: Rate, isEditable: Boolean) {
+    fun bind(rate: RateViewData, isEditable: Boolean) {
         val currencyData = CurrencyHolder.getCurrency(rate.currency)
 
         currencySymbolView.setText(rate.currency)
