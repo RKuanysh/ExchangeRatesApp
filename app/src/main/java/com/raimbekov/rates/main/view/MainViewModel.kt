@@ -46,6 +46,15 @@ class MainViewModel(
         update()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        ratesSubscription?.dispose()
+    }
+
+    fun retry() {
+        update()
+    }
+
     private fun update() {
         ratesSubscription?.dispose()
 
@@ -62,16 +71,11 @@ class MainViewModel(
                 loading.value = true
             }
             .subscribe({
-                loading.value = false
                 ratesLiveData.value = RatesUpdateData(listOf(RateViewData(currency, amount.toString())) + it, false)
             }, {
                 it.printStackTrace()
+                ratesError.value = Unit
             })
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        ratesSubscription?.dispose()
     }
 
     companion object {

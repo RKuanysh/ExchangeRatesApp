@@ -34,4 +34,6 @@
     <string name="currency_usa">US Dollar</string>
     <string name="currency_south_africa">South African Rand</string>
     <string name="currency_europe">Euro</string>
+    <string name="error_loading_rates">Error loading rates</string>
+    <string name="retry">Retry</string>
 </resources>

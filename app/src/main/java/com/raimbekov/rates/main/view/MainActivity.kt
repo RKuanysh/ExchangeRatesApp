@@ -1,11 +1,13 @@
 package com.raimbekov.rates.main.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.raimbekov.rates.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -29,8 +31,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.ratesError.observe(this, Observer {
-            AlertDialog.Builder(this)
-                .setMessage("Error loading rates")
+            Snackbar.make(findViewById(R.id.rootView), R.string.error_loading_rates, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry, object : View.OnClickListener{
+                    override fun onClick(v: View?) {
+                        viewModel.retry()
+                    }
+                })
                 .show()
         })
 
