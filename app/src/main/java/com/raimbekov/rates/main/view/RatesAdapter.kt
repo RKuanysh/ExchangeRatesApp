@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.raimbekov.rates.R
-import com.raimbekov.rates.main.domain.model.Rate
 import com.raimbekov.rates.main.view.model.CurrencyHolder
 import com.raimbekov.rates.main.view.model.RateViewData
 import kotlinx.android.synthetic.main.item_rate.view.*

@@ -11,7 +11,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.text.DecimalFormat
 
-class MainViewModel(
+class RatesViewModel(
     private val ratesInteractor: RatesInteractor
 ) : ViewModel() {
 

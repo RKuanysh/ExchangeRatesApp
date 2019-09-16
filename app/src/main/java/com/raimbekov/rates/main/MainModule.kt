@@ -6,7 +6,7 @@ import com.raimbekov.rates.main.domain.RatesRemoteRepository
 import com.raimbekov.rates.main.repository.RatesInMemoryRepository
 import com.raimbekov.rates.main.repository.RatesRestRepository
 import com.raimbekov.rates.main.repository.RatesService
-import com.raimbekov.rates.main.view.MainViewModel
+import com.raimbekov.rates.main.view.RatesViewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -23,6 +23,6 @@ object MainModule {
 
         factory { RatesInteractor(get(), get()) }
 
-        factory { MainViewModel(get()) }
+        factory { RatesViewModel(get()) }
     }
 }
