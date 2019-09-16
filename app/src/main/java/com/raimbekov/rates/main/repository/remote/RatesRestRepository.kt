@@ -1,5 +1,6 @@
 package com.raimbekov.rates.main.repository.remote
 
+import android.util.Log
 import com.raimbekov.rates.main.domain.model.Rate
 import com.raimbekov.rates.main.repository.RatesService
 import io.reactivex.Flowable
@@ -13,6 +14,7 @@ class RatesRestRepository(
         Flowable
             .interval(1, TimeUnit.SECONDS)
             .switchMapSingle {
+                Log.d(javaClass.simpleName, "requesting $currency")
                 ratesService.getRates(currency)
             }
             .map<List<Rate>> { ratesResponse ->

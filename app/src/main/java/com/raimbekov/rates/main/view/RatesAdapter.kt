@@ -32,6 +32,14 @@ class RatesAdapter(
         holder.bind(items.get(position), position == 0)
     }
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            holder.onValueChanged(items.get(position))
+        }
+    }
+
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         holder.unbind()
@@ -63,13 +71,15 @@ class ViewHolder(
     }
 
     fun bind(rate: RateViewData, isEditable: Boolean) {
+        onValueChanged(rate)
+
         val currencyData = CurrencyHolder.getCurrency(rate.currency)
 
         currencySymbolView.setText(rate.currency)
         currencyNameView.setText(currencyData.nameResId)
         currencyImageView.setImageResource(currencyData.flagResId)
 
-        valueEditText.setText(rate.value.toString())
+
 
         if (isEditable) {
             valueEditText.setSelection(valueEditText.text.length)
@@ -89,5 +99,9 @@ class ViewHolder(
     fun unbind() {
         valueEditText.removeTextChangedListener(valueChangeListener)
         valueEditText.setOnFocusChangeListener(null)
+    }
+
+    fun onValueChanged(rate: RateViewData) {
+        valueEditText.setText(rate.value)
     }
 }

@@ -28,7 +28,7 @@ class RatesFragment : Fragment() {
             if (ratesUpdateData.isFirstChanged) {
                 adapter.notifyDataSetChanged()
             } else {
-                adapter.notifyItemRangeChanged(1, ratesUpdateData.rates.size - 1)
+                adapter.notifyItemRangeChanged(1, ratesUpdateData.rates.size - 1, true)
             }
         })
 
