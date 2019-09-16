@@ -1,5 +1,6 @@
 package com.raimbekov.rates.main.view
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raimbekov.rates.common.SingleLiveEvent
@@ -17,7 +18,6 @@ class RatesViewModel(
 
     val ratesLiveData = MutableLiveData<RatesUpdateData>()
     val ratesError = SingleLiveEvent<Unit>()
-    val loading = MutableLiveData<Boolean>().apply { value = false }
 
     private var ratesSubscription: Disposable? = null
 
@@ -61,17 +61,10 @@ class RatesViewModel(
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                loading.value = true
-            }
-            .doOnEach {
-                loading.value = false
-            }
             .subscribe({
-                ratesLiveData.value = RatesUpdateData(listOf(RateViewData(currency, amount.toString())) + it, false)
+                ratesLiveData.value = RatesUpdateData(listOf(RateViewData(currency, amount.toString())) + it)
             }, {
-                it.printStackTrace()
-                loading.value = false
+                Log.e(javaClass.simpleName, it.message)
                 ratesError.value = Unit
             })
     }
