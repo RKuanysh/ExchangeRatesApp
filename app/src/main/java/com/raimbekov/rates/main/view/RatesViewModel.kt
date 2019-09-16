@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raimbekov.rates.common.SingleLiveEvent
-import com.raimbekov.rates.main.domain.RatesInteractor
+import com.raimbekov.rates.main.domain.GetRatesUseCase
 import com.raimbekov.rates.main.view.model.RateViewData
 import com.raimbekov.rates.main.view.model.RatesUpdateData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import java.text.DecimalFormat
 
 class RatesViewModel(
-    private val ratesInteractor: RatesInteractor
+    private val getRatesUseCase: GetRatesUseCase
 ) : ViewModel() {
 
     val ratesLiveData = MutableLiveData<RatesUpdateData>()
@@ -25,7 +25,6 @@ class RatesViewModel(
     private var amount: Double = 1.0
 
     init {
-        ratesInteractor.setCurrency(currency)
     }
 
     fun setCurrency(rate: RateViewData) {
@@ -36,7 +35,6 @@ class RatesViewModel(
 
         this.currency = rate.currency
         this.amount = rate.value.toDouble()
-        ratesInteractor.setCurrency(rate.currency)
         update()
     }
 
@@ -52,7 +50,7 @@ class RatesViewModel(
     private fun update() {
         ratesSubscription?.dispose()
 
-        ratesSubscription = ratesInteractor.getRates(amount)
+        ratesSubscription = getRatesUseCase.getRates(currency, amount)
             .observeOn(Schedulers.single())
             .map {
                 it.map {
