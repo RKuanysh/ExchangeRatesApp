@@ -55,4 +55,14 @@ class RatesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.stop()
+    }
 }

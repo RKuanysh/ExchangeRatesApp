@@ -26,7 +26,6 @@ class RatesViewModel(
 
     init {
         ratesInteractor.setCurrency(currency)
-        update()
     }
 
     fun setCurrency(rate: RateViewData) {
@@ -44,11 +43,6 @@ class RatesViewModel(
     fun setAmount(amount: String) {
         this.amount = amount.toDoubleOrNull() ?: 0.0
         update()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        ratesSubscription?.dispose()
     }
 
     fun retry() {
@@ -80,6 +74,14 @@ class RatesViewModel(
                 loading.value = false
                 ratesError.value = Unit
             })
+    }
+
+    fun start() {
+        update()
+    }
+
+    fun stop() {
+        ratesSubscription?.dispose()
     }
 
     companion object {
