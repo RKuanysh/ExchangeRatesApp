@@ -16,14 +16,15 @@ import kotlinx.android.synthetic.main.item_rate.view.*
 
 class RatesAdapter(
     private val onItemClickListener: (RateViewData) -> Unit,
-    private val onValueChangedListener: (String) -> Unit
+    private val onValueChangedListener: (String) -> Unit,
+    private val getBaseCurrency: () -> String
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<RateViewData> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rate, parent, false)
-        return ViewHolder(view, onItemClickListener, onValueChangedListener)
+        return ViewHolder(view, getBaseCurrency, onItemClickListener, onValueChangedListener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -52,6 +53,7 @@ class RatesAdapter(
 
 class ViewHolder(
     private val view: View,
+    private val getBaseCurrency: () -> String,
     private val onItemClickListener: (RateViewData) -> Unit,
     private val onValueChangedListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(view) {
@@ -80,10 +82,13 @@ class ViewHolder(
         currencyImageView.setImageResource(currencyData.flagResId)
 
 
-
         if (isEditable) {
             valueEditText.setSelection(valueEditText.text.length)
             valueEditText.addTextChangedListener(valueChangeListener)
+
+            if (getBaseCurrency() == rate.currency) {
+                valueEditText.requestFocus()
+            }
         }
 
         view.setOnClickListener {
@@ -98,6 +103,7 @@ class ViewHolder(
 
     fun unbind() {
         valueEditText.removeTextChangedListener(valueChangeListener)
+        valueEditText.clearFocus()
         valueEditText.setOnFocusChangeListener(null)
     }
 

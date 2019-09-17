@@ -21,7 +21,10 @@ class RatesViewModel(
 
     private var ratesSubscription: Disposable? = null
 
-    private var currency: String = "EUR"
+    var currency: String = "EUR"
+        get
+        private set
+
     private var amount: Double = 1.0
 
     init {

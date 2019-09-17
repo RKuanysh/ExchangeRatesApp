@@ -44,7 +44,8 @@ class RatesFragment : Fragment() {
 
         adapter = RatesAdapter(
             { viewModel.setCurrency(it) },
-            { viewModel.setAmount(it) }
+            { viewModel.setAmount(it) },
+            { viewModel.currency }
         )
 
         recyclerView.layoutManager = LinearLayoutManager(context)
