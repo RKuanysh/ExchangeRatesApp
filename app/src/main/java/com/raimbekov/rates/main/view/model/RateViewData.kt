@@ -1,6 +1,6 @@
 package com.raimbekov.rates.main.view.model
 
-class RateViewData (
+data class RateViewData (
     val currency: String,
     val value: String
 )
