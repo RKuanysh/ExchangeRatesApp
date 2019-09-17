@@ -27,9 +27,6 @@ class RatesViewModel(
 
     private var amount: Double = 1.0
 
-    init {
-    }
-
     fun setCurrency(rate: RateViewData) {
         if (currency == rate.currency) {
             return

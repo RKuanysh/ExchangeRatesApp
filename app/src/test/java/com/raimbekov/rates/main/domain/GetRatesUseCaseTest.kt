@@ -1,6 +1,7 @@
 package com.raimbekov.rates.main.domain
 
 import com.raimbekov.rates.DefaultRunner
+import com.raimbekov.rates.RatesData
 import com.raimbekov.rates.main.domain.model.Rate
 import io.mockk.every
 import io.mockk.mockk
@@ -91,11 +92,5 @@ class GetRatesUseCaseTest {
             .dispose()
     }
 
-    private fun stubRatesList(): List<Rate> {
-        val list = mutableListOf<Rate>()
-        list.add(Rate("AUD", 1.3))
-        list.add(Rate("USD", 1.2))
-        list.add(Rate("GBP", 0.9))
-        return list
-    }
+    private fun stubRatesList() = RatesData.rates
 }

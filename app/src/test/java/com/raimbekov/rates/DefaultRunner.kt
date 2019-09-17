@@ -5,7 +5,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.junit.runners.BlockJUnit4ClassRunner
 
-class DefaultRunner(clazz: Class<*>): BlockJUnit4ClassRunner(clazz) {
+class DefaultRunner(clazz: Class<*>) : BlockJUnit4ClassRunner(clazz) {
 
     init {
         RxAndroidPlugins.reset()
@@ -15,5 +15,6 @@ class DefaultRunner(clazz: Class<*>): BlockJUnit4ClassRunner(clazz) {
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setSingleSchedulerHandler { Schedulers.trampoline() }
     }
 }
